@@ -13,6 +13,7 @@ import type {
 } from '@/app/utils/formSchema/hospital/certificationOption';
 import AnglesUpDownIcon from '@/assets/angles-up-down.svg';
 import CheckIcon from '@/assets/check.svg';
+import { HOSPITAL_STATUSES } from '@/app/utils/constant';
 import { css } from '@/styled/css';
 import { updateHospitalCertificationOptionAction } from './form.action';
 import type { FC } from 'react';
@@ -54,7 +55,7 @@ export const Form: FC<Props> = ({ initialHospitalCertificationOption }) => {
       <Select.Root
         positioning={{ sameWidth: true }}
         width="100%"
-        collection={createListCollection({ items: jsavaRegistereds })}
+        collection={createListCollection({ items: Object.values(HOSPITAL_STATUSES) })}
         onValueChange={(e) => setJsavaRegistereds(e.value)}
         value={jsavaRegistereds}
         name="jsava-registered"
@@ -101,7 +102,7 @@ export const Form: FC<Props> = ({ initialHospitalCertificationOption }) => {
       <Select.Root
         positioning={{ sameWidth: true }}
         width="100%"
-        collection={createListCollection({ items: nichijuRegistereds })}
+        collection={createListCollection({ items: Object.values(HOSPITAL_STATUSES) })}
         onValueChange={(e) => setNichijuRegistereds(e.value)}
         value={nichijuRegistereds}
         name="nichiju-registered"

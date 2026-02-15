@@ -13,6 +13,7 @@ import type {
 } from '@/app/utils/formSchema/hospital/nightUrgentActionOption';
 import AnglesUpDownIcon from '@/assets/angles-up-down.svg';
 import CheckIcon from '@/assets/check.svg';
+import { HOSPITAL_STATUSES } from '@/app/utils/constant';
 import { css } from '@/styled/css';
 import { updateHospitalNightUrgentActionOptionAction } from './form.action';
 import type { FC } from 'react';
@@ -51,7 +52,7 @@ export const Form: FC<Props> = ({ initialHospitalNightUrgentActionOption }) => {
       <Select.Root
         positioning={{ sameWidth: true }}
         width="100%"
-        collection={createListCollection({ items: statuses })}
+        collection={createListCollection({ items: Object.values(HOSPITAL_STATUSES) })}
         onValueChange={(e) => setStatuses(e.value)}
         value={statuses}
         name="status"
