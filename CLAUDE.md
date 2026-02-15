@@ -1,302 +1,209 @@
-# ハムメディアアプリ - Claude Code ガイド
+# Ham Media App - Claude Code Guide
 
-## プロジェクト概要
+## Project Overview
 
-ハムメディアは国内初のハムスター専門支援団体が運営するアプリケーションです。このプロジェクトは以下の主要機能を提供しています：
+Ham Media is an application run by Japan's first hamster-dedicated support organization. It provides:
 
-1. **病院検索機能** - ハムスター受付可能病院の検索
-2. **LINE Bot** - LINE上での病院検索と里親募集情報の提供
-3. **管理画面** - 病院管理、在庫管理、スタッフ管理
+1. **Hospital Search** - Find hospitals that accept hamsters
+2. **LINE Bot** - Hospital search and foster care info via LINE
+3. **Admin Panel** - Hospital management, inventory, and staff management
 
-## 技術スタック
+## Tech Stack
 
-### バックエンド
+### Backend
 
-- **フレームワーク**: Fastify
-- **データベース**: PostgreSQL
+- **Framework**: Fastify
+- **Database**: PostgreSQL
 - **ORM**: Prisma
-- **GraphQL**: Mercurius (Fastify用GraphQLプラグイン)
-- **認証**: JWT
-- **テスト**: Vitest + Mercurius Integration Testing
-- **デプロイ**: Heroku
+- **GraphQL**: Mercurius (Fastify GraphQL plugin)
+- **Auth**: JWT
+- **Testing**: Vitest + Mercurius Integration Testing
+- **Deploy**: Heroku
 
-### フロントエンド
+### Frontend
 
-- **フレームワーク**: Next.js 15 (App Router)
-- **スタイリング**: Panda CSS
+- **Framework**: Next.js 15 (App Router)
+- **Styling**: Panda CSS
 - **GraphQL**: Apollo Client
-- **UI コンポーネント**: Ark UI
-- **認証**: Cookie ベース認証
-- **デプロイ**: CloudFront/S3/Lambda@Edge
+- **UI Components**: Ark UI
+- **Auth**: Cookie-based
+- **Deploy**: Vercel
 
-### 共通ツール
+### Shared Tooling
 
-- **モノレポ管理**: pnpm workspace
+- **Monorepo**: pnpm workspace
 - **Linting**: ESLint
-- **フォーマット**: Prettier
+- **Formatting**: Prettier
 - **CI/CD**: GitHub Actions
-- **モニタリング**: Sentry
+- **Monitoring**: Sentry
 
-## プロジェクト構造
+## Project Structure
 
 ```
 ham-media-app/
-├── backend/           # バックエンドAPIサーバー
-│   ├── server/        # Fastifyアプリケーション
-│   │   ├── graphql/   # GraphQLスキーマとリゾルバー
-│   │   ├── services/  # ビジネスロジック
-│   │   └── routes/    # RESTエンドポイント
-│   ├── prisma/        # データベーススキーマとシード
-│   └── tests/         # バックエンドテスト
-├── frontend/          # Next.jsフロントエンド
-│   ├── app/           # App Router ページ
-│   ├── components/    # UIコンポーネント
-│   └── services/      # APIクライアント
-└── graphql/           # 共有GraphQLスキーマ
+├── backend/           # Backend API server
+│   ├── server/        # Fastify application
+│   │   ├── graphql/   # GraphQL schemas and resolvers
+│   │   ├── services/  # Business logic
+│   │   └── routes/    # REST endpoints
+│   ├── prisma/        # Database schema and seeds
+│   └── tests/         # Backend tests
+├── frontend/          # Next.js frontend
+│   ├── app/           # App Router pages
+│   ├── components/    # UI components
+│   └── services/      # API clients
+└── graphql/           # Shared GraphQL schema
 ```
 
-## セットアップ手順
+## Local Development Setup
 
-### 前提条件
+### Prerequisites
 
 - Node.js >= 22.16.0
-- pnpm >= 10.14.0
-- PostgreSQL データベース
+- pnpm >= 10.18.3
+- Docker (for PostgreSQL container)
 
-### 初期セットアップ
+### Initial Setup
 
-1. **リポジトリクローン**
-
-```bash
-git clone git@github.com:egurinko/ham-media-app.git
-cd ham-media-app
-```
-
-2. **依存関係インストール**
+1. **Install dependencies**
 
 ```bash
 pnpm install
 ```
 
-### バックエンドセットアップ
-
-1. **環境変数設定**
+2. **Start PostgreSQL** (Docker)
 
 ```bash
-cd backend
-cp .env.template .env
-# .envファイルを編集してDATABASE_URLなどを設定
+docker compose up -d
 ```
 
-2. **データベースセットアップ**
+This starts the `ham-media-db` container on port 5434.
+
+3. **Configure backend environment**
 
 ```bash
-# スキーマをデータベースに反映
-pnpm db:push
-
-# Prismaクライアント生成
-pnpm db:reflect
-
-# 開発用シードデータ投入
-pnpm db:seed:dev
+cp backend/.env.template backend/.env
 ```
 
-3. **開発サーバー起動**
+Edit `backend/.env`:
+
+```
+DATABASE_URL=postgresql://ham_media:ham_media@localhost:5434/ham_media_development
+DIRECT_URL=postgresql://ham_media:ham_media@localhost:5434/ham_media_development
+JWT_TOKEN=dev-secret-token
+PORT=3000
+LINE_CHANNEL_ACCESS_TOKEN=dummy-dev-token
+LINE_CHANNEL_SECRET=dummy-dev-secret
+```
+
+4. **Set up the database**
 
 ```bash
-pnpm dev  # ポート3000で起動
+pnpm backend db:push        # Push schema to DB (also generates Prisma client)
+pnpm backend db:seed:dev    # Seed development data
 ```
 
-### フロントエンドセットアップ
-
-1. **環境変数設定**
+5. **Configure frontend environment**
 
 ```bash
-cd frontend
-cp .env.template .env
-# .envファイルを編集
+cp frontend/.env.template frontend/.env
 ```
 
-2. **開発サーバー起動**
+Set `NEXT_PUBLIC_API_URL` to `http://localhost:3000`.
+
+6. **Start dev servers** (in separate terminals)
 
 ```bash
-pnpm dev  # ポート8080で起動
+pnpm backend dev     # Port 3000
+pnpm frontend dev    # Port 8080
 ```
 
-## 開発コマンド
+### Dev Login Credentials
 
-### バックエンド
+Seed data creates these accounts:
+
+- **Admin**: `admin@example.com` / `password`
+- **User**: `user@example.com` / `password`
+
+### Docker Management
 
 ```bash
-# 開発サーバー起動
-pnpm backend dev
-
-# ビルド
-pnpm backend build
-
-# テスト実行
-pnpm backend test
-
-# テスト（カバレッジ付き）
-pnpm backend test:ci
-
-# データベース操作
-pnpm backend db:push          # スキーマをDBに反映
-pnpm backend db:reflect       # Prismaクライアント生成
-pnpm backend db:seed:dev      # 開発用シード実行
-
-# コード品質
-pnpm backend lint             # ESLint実行
-pnpm backend format:check     # Prettier チェック
-pnpm backend tscheck          # TypeScript型チェック
+docker compose up -d       # Start
+docker compose down        # Stop (data preserved)
+docker compose down -v     # Stop + delete data (clean restart)
 ```
 
-### フロントエンド
+## Development Commands
+
+### Backend
 
 ```bash
-# 開発サーバー起動
-pnpm frontend dev
-
-# ビルド
-pnpm frontend build
-
-# GraphQL コード生成
-pnpm frontend generate
-
-# スタイル生成
-pnpm frontend prepare
-
-# コード品質
-pnpm frontend lint            # Next.js lint実行
-pnpm frontend format:check    # Prettier チェック
-pnpm frontend tscheck         # TypeScript型チェック
+pnpm backend dev              # Start dev server
+pnpm backend build            # Build
+pnpm backend test             # Run tests
+pnpm backend test:ci          # Run tests with coverage
+pnpm backend db:push          # Push schema to DB
+pnpm backend db:reflect       # Generate Prisma client
+pnpm backend db:seed:dev      # Run dev seed
+pnpm backend lint             # ESLint
+pnpm backend format:check     # Prettier check
+pnpm backend tscheck          # TypeScript type check
 ```
 
-## データベース
-
-### スキーマ概要
-
-- **Hospital**: 病院情報
-- **HospitalAddress**: 病院住所・地理情報
-- **Product**: 商品情報（在庫管理用）
-- **Stock**: 在庫情報
-- **StockRequest**: 在庫リクエスト
-- **InternalUser**: 内部ユーザー（スタッフ）
-
-### 主要な関係性
-
-- 病院は住所情報を持ち、地理座標で位置検索が可能
-- 商品は複数の在庫を持ち、在庫リクエストで管理
-- 内部ユーザーはロールベースの認可システム
-
-## API構成
-
-### GraphQL API
-
-- **Public API**: 一般ユーザー向け（病院検索など）
-- **Internal API**: 管理画面向け（認証必須）
-
-### REST API
-
-- **Webhook**: LINE Bot用エンドポイント
-- **Health Check**: ヘルスチェック用エンドポイント
-
-## テスト
-
-### バックエンドテスト
-
-- **フレームワーク**: Vitest
-- **統合テスト**: Mercurius Integration Testing
-- **テストDB**: 専用のテスト環境設定
-
-### テスト実行方法
+### Frontend
 
 ```bash
-# バックエンドテスト
-cd backend
-pnpm test
-
-# カバレッジ付きテスト
-pnpm test:ci
+pnpm frontend dev             # Start dev server
+pnpm frontend build           # Build
+pnpm frontend generate        # GraphQL codegen
+pnpm frontend prepare         # Generate styles
+pnpm frontend lint            # Next.js lint
+pnpm frontend format:check    # Prettier check
+pnpm frontend tscheck         # TypeScript type check
 ```
 
-## デプロイ
+## Database
 
-### 本番環境
+### Key Models
 
-- **バックエンド**: Heroku
-- **フロントエンド**: AWS (CloudFront + S3 + Lambda@Edge)
+- **Hospital** - Hospital info
+- **HospitalAddress** - Address and geo data
+- **Product** - Product info (for inventory)
+- **Stock** - Inventory
+- **StockRequest** - Inventory requests
+- **InternalUser** - Internal users (staff)
 
-### CI/CD
+### Key Relationships
 
-GitHub Actionsを使用した自動デプロイメント
+- Hospitals have addresses with geo coordinates for location search
+- Products have multiple stock entries managed via stock requests
+- Internal users use role-based authorization
 
-## 開発ガイドライン
+## API
 
-### コード品質
+### GraphQL
 
-- ESLint + Prettier による自動フォーマット
-- TypeScript strict モード
-- 全てのAPIエンドポイントにテストを記述
+- **Public API**: `/public_api/graphql` - Public-facing (hospital search, etc.)
+- **Internal API**: `/internal_api/graphql` - Admin panel (auth required)
 
-### Git ワークフロー
+### REST
 
-- main ブランチで開発
-- Pull Request でのコードレビュー
-- Renovate による依存関係自動更新
+- **Webhook**: LINE Bot endpoint
+- **Health Check**: Health check endpoint
 
-### 注意事項
+## Deployment
 
-- 本番環境では環境変数でシークレット管理
-- データベース変更時はmigrationファイル作成
-- GraphQLスキーマ変更時は影響範囲を確認
+- **Backend**: Heroku
+- **Frontend**: Vercel (www.ham-media-app.net, ham-media-app.net)
+- **DNS**: AWS Route53
+- **CI/CD**: GitHub Actions
 
-## 外部サービス連携
+## Development Guidelines
 
-### LINE API
-
-- LINE Bot SDK を使用
-- Webhook 処理でメッセージ対応
-
-### Google Maps API
-
-- 病院位置情報の表示
-- 地理座標による検索
-
-### Sentry
-
-- エラー監視・ログ収集
-- パフォーマンス監視
-
-## トラブルシューティング
-
-### よくある問題
-
-1. **データベース接続エラー**
-   - `.env` ファイルの `DATABASE_URL` を確認
-   - PostgreSQL サーバーが起動しているか確認
-
-2. **GraphQL コード生成エラー**
-   - バックエンドサーバーが起動しているか確認
-   - スキーマファイルが最新か確認
-
-3. **ポート競合**
-   - バックエンド: 3000 番ポート
-   - フロントエンド: 8080 番ポート
-   - 他のプロセスが使用していないか確認
-
-### ログ確認
-
-```bash
-# バックエンドログ
-pnpm backend dev
-
-# フロントエンドログ
-pnpm frontend dev
-```
-
-## 追加リソース
-
-- [プロジェクトREADME](./README.md)
-- [ハムメディア公式サイト](https://ham-media.net)
-- [病院検索アプリ](https://ham-media-app.net/hospitals)
+- ESLint + Prettier for auto-formatting
+- TypeScript strict mode
+- Write tests for all API endpoints
+- Develop on main branch, code review via Pull Requests
+- Manage secrets via environment variables in production
+- Create migration files for database changes
+- Check impact scope when changing GraphQL schemas
