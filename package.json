@@ -12,7 +12,8 @@
     "build": "pnpm backend db:reflect && pnpm backend build",
     "start": "npm start --prefix ./backend",
     "build:backend": "pnpm backend db:reflect && pnpm backend build",
-    "start:backend": "pnpm backend start"
+    "start:backend": "pnpm backend start",
+    "prepare": "husky"
   },
   "devDependencies": {
     "@eslint/compat": "^2.0.2",
@@ -24,11 +25,17 @@
     "eslint": "^9.39.2",
     "eslint-config-prettier": "^10.1.8",
     "globals": "^17.2.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.2.7",
     "prettier": "^3.8.1",
     "typescript": "^5.9.3"
   },
   "dependencies": {
     "graphql": "^16.12.0"
+  },
+  "lint-staged": {
+    "backend/**/*.{js,ts}": "prettier --check",
+    "frontend/**/*.{js,jsx,ts,tsx,json,css,scss}": "prettier --check"
   },
   "pnpm": {
     "onlyBuiltDependencies": [
