@@ -1,11 +1,11 @@
 'use client';
 
-import { Button } from '@/app/components/atoms/Button';
 import * as Drawer from '@/app/components/atoms/Drawer';
 import { Icon } from '@/app/components/atoms/Icon';
 import { IconButton } from '@/app/components/atoms/IconButton';
 import { NavigationLink } from '@/app/components/atoms/NavigationLink';
 import { Typography } from '@/app/components/atoms/Typography';
+import { LogoutButton } from '@/app/components/organisms/admin/LogoutButton';
 import { ThemeChanger } from '@/app/components/molecules/ThemeChanger';
 import BarsIcon from '@/assets/bars.svg';
 import HospitalIcon from '@/assets/hospital.svg';
@@ -230,14 +230,7 @@ export const DrawerMenu: FC<Props> = ({
             >
               {internalUserName}
             </Typography>
-            <Button
-              visual="outlined"
-              className={css({
-                width: '120px',
-              })}
-            >
-              ログアウト
-            </Button>
+            <LogoutButton />
             <ThemeChanger />
           </div>
         </Drawer.Body>

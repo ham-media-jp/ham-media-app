@@ -1,7 +1,7 @@
 import Image from 'next/image';
-import { Button } from '@/app/components/atoms/Button';
 import { Typography } from '@/app/components/atoms/Typography';
 import { ThemeChanger } from '@/app/components/molecules/ThemeChanger';
+import { LogoutButton } from '@/app/components/organisms/admin/LogoutButton';
 import { Navigation } from '@/app/components/organisms/admin/Navigation';
 import { css } from '@/styled/css';
 import type { FC } from 'react';
@@ -62,14 +62,7 @@ export const Sidebar: FC<Props> = ({
       >
         {internalUserName}
       </Typography>
-      <Button
-        visual="outlined"
-        className={css({
-          width: '120px',
-        })}
-      >
-        ログアウト
-      </Button>
+      <LogoutButton />
       <ThemeChanger />
     </div>
   </aside>
