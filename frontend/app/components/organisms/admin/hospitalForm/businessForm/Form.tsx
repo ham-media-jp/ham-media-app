@@ -120,7 +120,9 @@ export const Form: FC<Props> = ({ initialHospitalBusinessForm }) => {
       <Select.Root
         positioning={{ sameWidth: true }}
         width="100%"
-        collection={createListCollection({ items: Object.values(HOSPITAL_STATUSES) })}
+        collection={createListCollection({
+          items: Object.values(HOSPITAL_STATUSES),
+        })}
         onValueChange={(e) => setInsuranceEnableds(e.value)}
         value={insuranceEnableds}
         name="insuranceEnabled"

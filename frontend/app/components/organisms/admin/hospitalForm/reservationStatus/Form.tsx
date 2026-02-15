@@ -60,7 +60,9 @@ export const Form: FC<Props> = ({ initialHospitalReservationStatus }) => {
       <Select.Root
         positioning={{ sameWidth: true }}
         width="100%"
-        collection={createListCollection({ items: Object.values(HOSPITAL_STATUSES) })}
+        collection={createListCollection({
+          items: Object.values(HOSPITAL_STATUSES),
+        })}
         onValueChange={(e) => setRequireds(e.value)}
         value={requireds}
         name="required"
@@ -102,7 +104,9 @@ export const Form: FC<Props> = ({ initialHospitalReservationStatus }) => {
       <Select.Root
         positioning={{ sameWidth: true }}
         width="100%"
-        collection={createListCollection({ items: Object.values(HOSPITAL_STATUSES) })}
+        collection={createListCollection({
+          items: Object.values(HOSPITAL_STATUSES),
+        })}
         onValueChange={(e) => setReservables(e.value)}
         value={reservables}
         name="reservable"

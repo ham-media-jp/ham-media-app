@@ -55,7 +55,9 @@ export const Form: FC<Props> = ({ initialHospitalCertificationOption }) => {
       <Select.Root
         positioning={{ sameWidth: true }}
         width="100%"
-        collection={createListCollection({ items: Object.values(HOSPITAL_STATUSES) })}
+        collection={createListCollection({
+          items: Object.values(HOSPITAL_STATUSES),
+        })}
         onValueChange={(e) => setJsavaRegistereds(e.value)}
         value={jsavaRegistereds}
         name="jsava-registered"
@@ -102,7 +104,9 @@ export const Form: FC<Props> = ({ initialHospitalCertificationOption }) => {
       <Select.Root
         positioning={{ sameWidth: true }}
         width="100%"
-        collection={createListCollection({ items: Object.values(HOSPITAL_STATUSES) })}
+        collection={createListCollection({
+          items: Object.values(HOSPITAL_STATUSES),
+        })}
         onValueChange={(e) => setNichijuRegistereds(e.value)}
         value={nichijuRegistereds}
         name="nichiju-registered"

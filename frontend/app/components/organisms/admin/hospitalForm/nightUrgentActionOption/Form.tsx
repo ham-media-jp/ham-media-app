@@ -52,7 +52,9 @@ export const Form: FC<Props> = ({ initialHospitalNightUrgentActionOption }) => {
       <Select.Root
         positioning={{ sameWidth: true }}
         width="100%"
-        collection={createListCollection({ items: Object.values(HOSPITAL_STATUSES) })}
+        collection={createListCollection({
+          items: Object.values(HOSPITAL_STATUSES),
+        })}
         onValueChange={(e) => setStatuses(e.value)}
         value={statuses}
         name="status"
