@@ -36,11 +36,11 @@
   "lint-staged": {
     "backend/**/*.{js,ts}": [
       "prettier --check",
-      "eslint"
+      "eslint --config backend/eslint.config.mjs"
     ],
     "frontend/**/*.{js,jsx,ts,tsx}": [
       "prettier --check",
-      "eslint"
+      "bash -c 'pnpm frontend lint'"
     ],
     "frontend/**/*.{json,css,scss}": "prettier --check"
   },
