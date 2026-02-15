@@ -8,6 +8,7 @@
   "scripts": {
     "preinstall": "npx only-allow pnpm",
     "backend": "pnpm -F \"backend\"",
+    "frontend": "pnpm -F \"frontend\"",
     "build": "pnpm backend db:reflect && pnpm backend build",
     "start": "npm start --prefix ./backend",
     "build:backend": "pnpm backend db:reflect && pnpm backend build",
