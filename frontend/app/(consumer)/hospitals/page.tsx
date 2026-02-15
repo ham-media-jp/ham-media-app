@@ -60,6 +60,15 @@ export default async function Page() {
       </Card>
       <RecommendedHospitals />
       <NightServiceHospitals />
+      <div
+        className={css({
+          fontSize: 'xs',
+          color: 'gray.500',
+          mt: 'sm',
+        })}
+      >
+        v1.0.1
+      </div>
     </div>
   );
 }
