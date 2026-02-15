@@ -10,13 +10,13 @@ import { SubmitButton } from '@/app/components/atoms/SubmitButton';
 import { Tag } from '@/app/components/atoms/Tag';
 import { Textarea } from '@/app/components/atoms/Textarea';
 import { ErrorMessages } from '@/app/components/molecules/ErrorMessages';
+import { HOSPITAL_STATUSES } from '@/app/utils/constant';
 import type {
   FormState,
   FormSchema,
 } from '@/app/utils/formSchema/hospital/nightServiceOption';
 import AnglesUpDownIcon from '@/assets/angles-up-down.svg';
 import CheckIcon from '@/assets/check.svg';
-import { HOSPITAL_STATUSES } from '@/app/utils/constant';
 import { css } from '@/styled/css';
 import { stack } from '@/styled/patterns';
 import { updateHospitalNightServiceOptionAction } from './form.action';

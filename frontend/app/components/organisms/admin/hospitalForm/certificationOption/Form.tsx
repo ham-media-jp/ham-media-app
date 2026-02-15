@@ -7,13 +7,13 @@ import { Alert } from '@/app/components/atoms/Alert';
 import { Icon } from '@/app/components/atoms/Icon';
 import { SubmitButton } from '@/app/components/atoms/SubmitButton';
 import { Tag } from '@/app/components/atoms/Tag';
+import { HOSPITAL_STATUSES } from '@/app/utils/constant';
 import type {
   FormState,
   FormSchema,
 } from '@/app/utils/formSchema/hospital/certificationOption';
 import AnglesUpDownIcon from '@/assets/angles-up-down.svg';
 import CheckIcon from '@/assets/check.svg';
-import { HOSPITAL_STATUSES } from '@/app/utils/constant';
 import { css } from '@/styled/css';
 import { updateHospitalCertificationOptionAction } from './form.action';
 import type { FC } from 'react';
