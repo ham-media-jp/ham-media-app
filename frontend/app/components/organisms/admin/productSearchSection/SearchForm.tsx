@@ -154,7 +154,7 @@ export const SearchForm: FC<Props> = ({
             </Select.Trigger>
           </Select.Control>
           <Select.Positioner>
-            <Select.Content>
+            <Select.Content maxH="440px" overflowY="auto">
               {makers.map((maker) => (
                 <Select.Item key={maker.value} item={maker}>
                   <Select.ItemText>{maker.label}</Select.ItemText>
@@ -182,7 +182,7 @@ export const SearchForm: FC<Props> = ({
             </Select.Trigger>
           </Select.Control>
           <Select.Positioner>
-            <Select.Content>
+            <Select.Content maxH="440px" overflowY="auto">
               {productTags.map((productTag) => (
                 <Select.Item key={productTag.value} item={productTag}>
                   <Select.ItemText>{productTag.label}</Select.ItemText>
@@ -210,7 +210,7 @@ export const SearchForm: FC<Props> = ({
             </Select.Trigger>
           </Select.Control>
           <Select.Positioner>
-            <Select.Content>
+            <Select.Content maxH="440px" overflowY="auto">
               {internalUsers.map((internalUser) => (
                 <Select.Item key={internalUser.value} item={internalUser}>
                   <Select.ItemText>{internalUser.label}</Select.ItemText>
@@ -238,7 +238,7 @@ export const SearchForm: FC<Props> = ({
             </Select.Trigger>
           </Select.Control>
           <Select.Positioner>
-            <Select.Content>
+            <Select.Content maxH="440px" overflowY="auto">
               {internalUsers.map((internalUser) => (
                 <Select.Item key={internalUser.value} item={internalUser}>
                   <Select.ItemText>{internalUser.label}</Select.ItemText>
