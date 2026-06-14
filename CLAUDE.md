@@ -198,6 +198,22 @@ pnpm frontend tscheck         # TypeScript type check
 - **DNS**: AWS Route53
 - **CI/CD**: GitHub Actions
 
+### Heroku build notes
+
+- **Stack**: Heroku-26.
+- **Buildpack**: use the official `heroku/nodejs` buildpack only — it supports
+  pnpm natively. Do **not** add a third-party pnpm buildpack (e.g.
+  `unfold/heroku-buildpack-pnpm`); its prune step is incompatible with pnpm 10
+  and fails the build.
+- **Deploys**: triggered via Heroku's GitHub integration (deploy the `main`
+  branch from the Heroku dashboard).
+- **`CI=true` config var**: required. Without it, pnpm aborts the
+  "Pruning devDependencies" step with `ERR_PNPM_ABORTED_REMOVE_MODULES_DIR_NO_TTY`
+  (it asks for interactive confirmation, but there is no TTY during the build).
+- **pnpm 10 settings**: pnpm 10 no longer reads the `pnpm` field in
+  `package.json`. Workspace settings live in `pnpm-workspace.yaml` — notably
+  `onlyBuiltDependencies` (which allows `bcrypt`'s native build to run).
+
 ## Development Guidelines
 
 - ESLint + Prettier for auto-formatting
