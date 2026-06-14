@@ -31,6 +31,17 @@ type CartProducts = {
   product: ProductListItemFieldsFragment;
 }[];
 
+// Build the cart's keyed-record shape (Record<number, CartItem>) so it stays
+// consistent with how useCart reads/writes it. Passing an array here previously
+// corrupted the cart into a sparse array with null holes.
+const toCartItems = (cartProducts: CartProducts) =>
+  Object.fromEntries(
+    cartProducts.map((item) => [
+      item.productId,
+      { productId: item.productId, count: item.count },
+    ]),
+  );
+
 export const StockRequestNewForm: FC<NoProps> = ({}) => {
   const router = useRouter();
   const { cart, replaceItems } = useCart();
@@ -84,12 +95,7 @@ export const StockRequestNewForm: FC<NoProps> = ({}) => {
       }
     });
     setCartProducts(newCartProducts);
-    replaceItems({
-      items: newCartProducts.map((item) => ({
-        productId: item.productId,
-        count: item.count,
-      })),
-    });
+    replaceItems({ items: toCartItems(newCartProducts) });
   };
 
   const handleRemoveItem = (productId: number) => {
@@ -97,12 +103,7 @@ export const StockRequestNewForm: FC<NoProps> = ({}) => {
       (cartProduct) => cartProduct.productId !== productId,
     );
     setCartProducts(newCartProducts);
-    replaceItems({
-      items: newCartProducts.map((item) => ({
-        productId: item.productId,
-        count: item.count,
-      })),
-    });
+    replaceItems({ items: toCartItems(newCartProducts) });
   };
 
   return (
