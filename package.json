@@ -43,10 +43,5 @@
       "bash -c 'pnpm frontend lint'"
     ],
     "frontend/**/*.{json,css,scss}": "prettier --check"
-  },
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "bcrypt"
-    ]
   }
 }
