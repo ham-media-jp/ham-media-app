@@ -12,6 +12,35 @@ export type Cart = {
 const STORAGE_EVENT_NAME = 'storage';
 const CART_STORAGE_KEY = 'admin-product-cart';
 
+// Coerce whatever is stored into a clean Record<number, CartItem>, keyed by
+// productId. Tolerates legacy/corrupt values such as arrays (which can contain
+// `null` holes once serialized) so consumers never dereference a null item.
+const normalizeItems = (rawItems: unknown): Record<number, CartItem> => {
+  const items: Record<number, CartItem> = {};
+  if (!rawItems || typeof rawItems !== 'object') {
+    return items;
+  }
+
+  for (const value of Object.values(rawItems)) {
+    if (
+      !value ||
+      typeof value !== 'object' ||
+      !('productId' in value) ||
+      !('count' in value)
+    ) {
+      continue;
+    }
+    const productId = Number((value as CartItem).productId);
+    const count = Number((value as CartItem).count);
+    if (Number.isNaN(productId) || Number.isNaN(count)) {
+      continue;
+    }
+    items[productId] = { productId, count };
+  }
+
+  return items;
+};
+
 // Get cart from localStorage
 export const getCart = (): Cart => {
   if (typeof window === 'undefined') {
@@ -24,7 +53,8 @@ export const getCart = (): Cart => {
   }
 
   try {
-    return JSON.parse(storedCart);
+    const parsed = JSON.parse(storedCart);
+    return { items: normalizeItems(parsed?.items) };
   } catch (e) {
     console.error('Failed to parse cart from localStorage', e);
     return { items: {} };
