@@ -64,6 +64,16 @@ export const Hero: FC<NoProps> = () => (
       <Typography bold={true} variant="body2" display="block">
         セカンドオピニオンもご検討ください
       </Typography>
+      <Typography
+        variant="caption"
+        display="block"
+        className={css({
+          mt: 'sm',
+          textAlign: 'left',
+        })}
+      >
+        本ページに掲載している情報は、当団体が独自の利便性向上のためにまとめたものであり、特定の病院・サービスを推薦・保証するものではありません。ご利用の際は必ずご自身で最新の情報をご確認ください。万が一トラブルが生じた場合も、当団体では一切の責任を負いかねます。
+      </Typography>
     </div>
   </>
 );
